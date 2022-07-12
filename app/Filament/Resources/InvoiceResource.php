@@ -4,16 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
-use App\Models\Customer;
 use App\Models\Invoice;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class InvoiceResource extends Resource
 {
@@ -27,15 +23,16 @@ class InvoiceResource extends Resource
             ->schema([
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'name')
-                    ->required(),
+                    ->label('Customer'),
                 Forms\Components\TextInput::make('invoice_number')
                     ->required()
-                    ->unique(ignorable: fn (?Model $record): ?Model => $record)
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('bill_date')->format('d/m/Y'),
+                Forms\Components\DatePicker::make('bill_date')
+                    ->required(),
                 Forms\Components\DatePicker::make('due_date'),
                 Forms\Components\DatePicker::make('expired_date'),
-                Forms\Components\TextInput::make('total')->disabled(),
+                Forms\Components\TextInput::make('total')
+                    ->disabled(),
             ]);
     }
 
