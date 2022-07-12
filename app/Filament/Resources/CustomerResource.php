@@ -33,7 +33,8 @@ class CustomerResource extends Resource
                 Forms\Components\TextInput::make('company_name')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('address')
-                    ->maxLength(65535),
+                    ->rows(2)
+                    ->maxLength(1000),
             ]);
     }
 
@@ -50,18 +51,28 @@ class CustomerResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCustomers::route('/'),
+            'index' => Pages\ListCustomers::route('/'),
+            'create' => Pages\CreateCustomer::route('/create'),
+            'view' => Pages\ViewCustomer::route('/{record}'),
+            'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
 }
